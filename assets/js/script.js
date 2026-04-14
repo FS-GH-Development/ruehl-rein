@@ -78,6 +78,7 @@ function buildFooter() {
         <div style="display:flex;gap:18px;flex-wrap:wrap">
           <a href="datenschutz.html">Datenschutz</a>
           <a href="impressum.html">Impressum</a>
+          <a href="#" onclick="CCM.openWidget(); return false;">Cookie Einstellungen</a>
         </div>
       </div>
     </div>
