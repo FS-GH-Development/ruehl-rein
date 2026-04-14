@@ -5,3 +5,6 @@ config.php
 
 # logs
 *.log
+
+# Readme
+README.md
