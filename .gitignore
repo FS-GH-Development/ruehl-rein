@@ -1,3 +1,7 @@
 config.php
 
-README.md
+# macOS
+.DS_Store
+
+# logs
+*.log
