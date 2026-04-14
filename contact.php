@@ -4,33 +4,35 @@ declare(strict_types=1);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// PHPMailer laden
 require __DIR__ . '/phpmailer/src/Exception.php';
 require __DIR__ . '/phpmailer/src/PHPMailer.php';
 require __DIR__ . '/phpmailer/src/SMTP.php';
 
-// Config laden (Passwort ausgelagert)
 $config = require __DIR__ . '/config.php';
 
-// Nur POST erlauben
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: kontakt.html');
     exit;
 }
 
-// Honeypot (Spam-Schutz)
+// Honeypot
 if (!empty($_POST['website'] ?? '')) {
-    header('Location: contact-success.html');
+    header('Location: kontakt.html?status=success');
     exit;
 }
 
-// Daten holen
+// Mindestzeit gegen Bots
+$formTime = (int)($_POST['form_time'] ?? 0);
+if ($formTime > 0 && (time() - $formTime) < 3) {
+    header('Location: kontakt.html?status=spam');
+    exit;
+}
+
 $name = trim((string)($_POST['name'] ?? ''));
 $email = trim((string)($_POST['email'] ?? ''));
 $phone = trim((string)($_POST['phone'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
 
-// Validierung
 if ($name === '' || $email === '' || $message === '') {
     header('Location: kontakt.html?status=missing');
     exit;
@@ -41,7 +43,11 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-// Mail vorbereiten
+if (mb_strlen($name) > 120 || mb_strlen($email) > 190 || mb_strlen($phone) > 60 || mb_strlen($message) > 5000) {
+    header('Location: kontakt.html?status=toolong');
+    exit;
+}
+
 $mail = new PHPMailer(true);
 
 try {
@@ -51,22 +57,15 @@ try {
     $mail->Username = $config['smtp_user'];
     $mail->Password = $config['smtp_pass'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port = $config['smtp_port'];
+    $mail->Port = (int)$config['smtp_port'];
     $mail->CharSet = 'UTF-8';
 
-    // Absender
     $mail->setFrom($config['smtp_user'], 'Rühl & Rein Website');
-
-    // Empfänger
     $mail->addAddress($config['smtp_user'], 'Rühl & Rein');
-
-    // Antwortadresse (wichtig!)
     $mail->addReplyTo($email, $name);
 
-    // Betreff
     $mail->Subject = 'Neue Anfrage über ruehl-rein.com';
 
-    // Inhalt
     $body  = "Neue Anfrage über das Kontaktformular\n\n";
     $body .= "Name: {$name}\n";
     $body .= "E-Mail: {$email}\n";
@@ -76,15 +75,12 @@ try {
     $mail->Body = $body;
     $mail->isHTML(false);
 
-    // Senden
     $mail->send();
 
-    // Erfolg
-    header('Location: contact-success.html');
+    header('Location: kontakt.html?status=success');
     exit;
-
 } catch (Exception $e) {
-    // Fehler (optional: loggen)
+    error_log('Kontaktformular Fehler: ' . $mail->ErrorInfo);
     header('Location: kontakt.html?status=error');
     exit;
 }

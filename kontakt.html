@@ -27,28 +27,31 @@
             <div class="muted">Kontaktieren Sie uns für ein individuelles Angebot</div>
           </div>
 
+          <div id="formMessage" style="display:none;margin:0 0 18px 0;padding:14px 16px;border-radius:14px;font-weight:600;"></div>
+
           <form action="contact.php" method="POST" class="form-grid" novalidate>
+            <input type="hidden" name="form_time" id="form_time">
+
             <div>
               <label for="name">Name *</label>
-              <input id="name" name="name" type="text" required placeholder="Ihr vollständiger Name">
+              <input id="name" name="name" type="text" required maxlength="120" placeholder="Ihr vollständiger Name">
             </div>
 
             <div>
               <label for="email">E-Mail *</label>
-              <input id="email" name="email" type="email" required placeholder="ihre.email@beispiel.de">
+              <input id="email" name="email" type="email" required maxlength="190" placeholder="ihre.email@beispiel.de">
             </div>
 
             <div>
               <label for="phone">Telefon</label>
-              <input id="phone" name="phone" type="tel" placeholder="+49 123 456 7890">
+              <input id="phone" name="phone" type="tel" maxlength="60" placeholder="+49 123 456 7890">
             </div>
 
             <div>
               <label for="message">Ihre Anfrage *</label>
-              <textarea id="message" name="message" required placeholder="Beschreiben Sie Ihre Reinigungsanforderungen..."></textarea>
+              <textarea id="message" name="message" required maxlength="5000" placeholder="Beschreiben Sie Ihre Reinigungsanforderungen..."></textarea>
             </div>
 
-            <!-- Honeypot gegen Spam -->
             <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;">
               <label for="website">Website</label>
               <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
@@ -106,5 +109,49 @@
 
   <div id="site-footer"></div>
   <script src="assets/js/script.js"></script>
+  <script>
+    (function () {
+      const timeInput = document.getElementById('form_time');
+      if (timeInput) {
+        timeInput.value = Math.floor(Date.now() / 1000);
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get('status');
+      const box = document.getElementById('formMessage');
+
+      if (!box || !status) return;
+
+      const styles = {
+        success: 'background:#eaf7ee;color:#166534;border:1px solid #bbf7d0;',
+        missing: 'background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;',
+        email:   'background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;',
+        toolong: 'background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;',
+        spam:    'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;',
+        error:   'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;'
+      };
+
+      const texts = {
+        success: 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
+        missing: 'Bitte füllen Sie alle Pflichtfelder aus.',
+        email:   'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+        toolong: 'Ihre Eingabe ist zu lang. Bitte kürzen Sie die Nachricht etwas.',
+        spam:    'Ihre Anfrage konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.',
+        error:   'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut oder schreiben Sie direkt an kontakt@ruehl-rein.com.'
+      };
+
+      box.style.cssText = styles[status] || styles.error;
+      box.textContent = texts[status] || texts.error;
+      box.style.display = 'block';
+
+      if (status === 'success') {
+        const form = document.querySelector('form[action="contact.php"]');
+        if (form) form.reset();
+      }
+
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    })();
+  </script>
 </body>
 </html>
