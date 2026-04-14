@@ -2,6 +2,7 @@ config.php
 
 # macOS
 .DS_Store
+**/.DS_Store
 
 # logs
 *.log
