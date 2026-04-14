@@ -8,7 +8,7 @@ require __DIR__ . '/phpmailer/src/Exception.php';
 require __DIR__ . '/phpmailer/src/PHPMailer.php';
 require __DIR__ . '/phpmailer/src/SMTP.php';
 
-$config = require __DIR__ . '/config.php';
+$config = require dirname(__DIR__) . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: kontakt.html');
