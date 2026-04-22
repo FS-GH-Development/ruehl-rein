@@ -1,109 +1,99 @@
-const CURRENT_PATH = location.pathname.split('/').pop() || 'index.html';
+(function () {
+  const dataLayer = window.dataLayer = window.dataLayer || [];
 
-function buildHeader() {
-  const nav = [
-    ['index.html', 'Home'],
-    ['privatkunden.html', 'Privatkunden'],
-    ['gewerbekunden.html', 'Gewerbekunden'],
-    ['gartenservice.html', 'Gartenservice'],
-    ['kontakt.html', 'Kontakt']
-  ];
+  window.rrTrack = function rrTrack(eventName, params = {}) {
+    const payload = {
+      event: eventName,
+      page_path: window.location.pathname,
+      ...params
+    };
 
-  const active = (file) => CURRENT_PATH === file || (CURRENT_PATH === '' && file === 'index.html');
-  const navLinks = nav
-    .map(([href, label]) => `<a href="${href}" class="${active(href) ? 'active' : ''}">${label}</a>`)
-    .join('');
+    dataLayer.push(payload);
 
-  return `
-  <header class="site-header">
-    <div class="container nav-bar">
-      <a href="index.html" class="brand" aria-label="Rühl & Rein Startseite">
-        <div class="logo-box">✦</div>
-        <div class="brand-text">
-          <strong>Rühl & Rein</strong>
-          <span>GEBÄUDEREINIGUNG</span>
-        </div>
-      </a>
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, params);
+    }
+  };
 
-      <nav class="nav-links" aria-label="Hauptnavigation">${navLinks}</nav>
+  function initNavigation() {
+    const menuBtn = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-      <div class="nav-cta">
-        <a class="btn btn-primary" href="kontakt.html">Angebot anfordern</a>
-      </div>
+    if (!menuBtn || !mobileMenu) return;
 
-      <button class="mobile-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu" id="mobileToggle">☰</button>
-    </div>
-
-    <div class="container mobile-menu" id="mobileMenu">
-      ${nav.map(([href, label]) => `<a href="${href}" class="${active(href) ? 'active' : ''}">${label}</a>`).join('')}
-      <a class="btn btn-primary full" href="kontakt.html" style="margin-top:10px">Angebot anfordern</a>
-    </div>
-  </header>`;
-}
-
-function buildFooter() {
-  return `
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <a href="index.html" class="brand" style="color:#fff;margin-bottom:18px;display:inline-flex">
-            <div class="logo-box" style="background:rgba(255,255,255,.1)">✦</div>
-            <div class="brand-text">
-              <strong style="color:#fff">Rühl & Rein</strong>
-              <span style="color:rgba(255,255,255,.72)">GEBÄUDEREINIGUNG</span>
-            </div>
-          </a>
-          <p>Ihr zuverlässiger Partner für professionelle <strong>Gebäudereinigung in Viersen</strong> und Umgebung. Wir bieten Reinigungsservice für Privatkunden, Gewerbekunden und Außenanlagen.</p>
-        </div>
-
-        <div>
-          <h3>Leistungen</h3>
-          <p><a href="privatkunden.html">Wohnungsreinigung</a></p>
-          <p><a href="gewerbekunden.html">Büro- &amp; Treppenhausreinigung</a></p>
-          <p><a href="gartenservice.html">Gartenservice &amp; Außenanlagen</a></p>
-          <p><a href="kontakt.html">Kostenloses Angebot</a></p>
-        </div>
-
-        <div>
-          <h3>Kontakt</h3>
-          <p><a href="tel:+4917655727074">+49 176 55727074</a></p>
-          <p><a href="mailto:kontakt@ruehl-rein.com">kontakt@ruehl-rein.com</a></p>
-          <p>Gerhart-Hauptmann-Str. 8<br>41747 Viersen</p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <small>© <span id="year"></span> Rühl & Rein Gebäudereinigung NRW. Alle Rechte vorbehalten.</small>
-        <div style="display:flex;gap:18px;flex-wrap:wrap">
-          <a href="datenschutz.html">Datenschutz</a>
-          <a href="impressum.html">Impressum</a>
-          <a href="#" onclick="CCM.openWidget(); return false;">Cookie Einstellungen</a>
-        </div>
-      </div>
-    </div>
-  </footer>`;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const headerTarget = document.getElementById('site-header');
-  const footerTarget = document.getElementById('site-footer');
-
-  if (headerTarget) headerTarget.innerHTML = buildHeader();
-  if (footerTarget) footerTarget.innerHTML = buildFooter();
-
-  const menuBtn = document.getElementById('mobileToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
-
-  if (menuBtn && mobileMenu) {
     menuBtn.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.toggle('show');
-      menuBtn.textContent = isOpen ? '✕' : '☰';
+      menuBtn.textContent = isOpen ? '×' : '☰';
       menuBtn.setAttribute('aria-expanded', String(isOpen));
     });
   }
 
-  const year = document.getElementById('year');
-  if (year) year.textContent = new Date().getFullYear();
-  
-});
+  function initFooterYear() {
+    document.querySelectorAll('[data-current-year]').forEach((target) => {
+      target.textContent = String(new Date().getFullYear());
+    });
+  }
+
+  function initTrackingHooks() {
+    document.querySelectorAll('[data-track-event]').forEach((element) => {
+      element.addEventListener('click', () => {
+        window.rrTrack(element.dataset.trackEvent, {
+          event_label: element.dataset.trackLabel || element.textContent.trim(),
+          link_url: element.getAttribute('href') || ''
+        });
+      });
+    });
+
+    document.querySelectorAll('a[href^="tel:"]').forEach((element) => {
+      if (element.dataset.trackEvent) return;
+      element.addEventListener('click', () => {
+        window.rrTrack('click_phone', {
+          event_label: element.textContent.trim(),
+          link_url: element.getAttribute('href') || ''
+        });
+      });
+    });
+
+    document.querySelectorAll('a[href^="mailto:"]').forEach((element) => {
+      if (element.dataset.trackEvent) return;
+      element.addEventListener('click', () => {
+        window.rrTrack('click_email', {
+          event_label: element.textContent.trim(),
+          link_url: element.getAttribute('href') || ''
+        });
+      });
+    });
+
+    const serviceName = document.body.dataset.servicePage;
+    if (serviceName) {
+      window.rrTrack('view_service_page', { service_name: serviceName });
+    }
+  }
+
+  function initCookieSettingsLink() {
+    document.querySelectorAll('[data-cookie-settings]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        if (window.CCM && typeof window.CCM.openWidget === 'function') {
+          window.CCM.openWidget();
+        }
+      });
+    });
+  }
+
+  function initFormTime() {
+    const timeInput = document.getElementById('form_time');
+    if (timeInput) {
+      timeInput.value = Math.floor(Date.now() / 1000);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initFooterYear();
+    initTrackingHooks();
+    initCookieSettingsLink();
+    initFormTime();
+  });
+})();

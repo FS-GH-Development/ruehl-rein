@@ -31,6 +31,8 @@ if ($formTime > 0 && (time() - $formTime) < 3) {
 $name = trim((string)($_POST['name'] ?? ''));
 $email = trim((string)($_POST['email'] ?? ''));
 $phone = trim((string)($_POST['phone'] ?? ''));
+$service = trim((string)($_POST['service'] ?? ''));
+$location = trim((string)($_POST['location'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
 
 if ($name === '' || $email === '' || $message === '') {
@@ -43,7 +45,14 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-if (mb_strlen($name) > 120 || mb_strlen($email) > 190 || mb_strlen($phone) > 60 || mb_strlen($message) > 5000) {
+if (
+    mb_strlen($name) > 120 ||
+    mb_strlen($email) > 190 ||
+    mb_strlen($phone) > 60 ||
+    mb_strlen($service) > 120 ||
+    mb_strlen($location) > 160 ||
+    mb_strlen($message) > 5000
+) {
     header('Location: kontakt.html?status=toolong');
     exit;
 }
@@ -70,6 +79,8 @@ try {
     $body .= "Name: {$name}\n";
     $body .= "E-Mail: {$email}\n";
     $body .= "Telefon: {$phone}\n\n";
+    $body .= "Gewünschte Leistung: {$service}\n";
+    $body .= "Objektort: {$location}\n\n";
     $body .= "Nachricht:\n{$message}\n";
 
     $mail->Body = $body;

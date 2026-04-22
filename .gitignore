@@ -1,4 +1,11 @@
 config.php
+config.local.php
+config.production.php
+
+# environment / secrets
+.env
+.env.*
+!.env.example
 
 # macOS
 .DS_Store
@@ -6,6 +13,3 @@ config.php
 
 # logs
 *.log
-
-# Readme
-README.md
