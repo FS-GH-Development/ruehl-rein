@@ -84,14 +84,21 @@
   <header class="site-header">
     <div class="container nav-bar">
       <a href="index.html" class="brand" aria-label="Rühl & Rein Startseite">
-        <div class="logo-box" aria-hidden="true">✦</div>
-        <div class="brand-text"><strong>Rühl &amp; Rein</strong><span>GEBÄUDEREINIGUNG</span></div>
+        <img class="brand-logo" src="assets/img/ruehl-rein-logo.png" width="175" height="175" alt="" aria-hidden="true">
       </a>
       <nav class="nav-links" aria-label="Hauptnavigation">
         <a href="index.html">Startseite</a>
         <a href="privatkunden.html">Privatkunden</a>
         <a href="gewerbekunden.html">Gewerbekunden</a>
-        <a href="gartenservice.html">Gartenservice</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-trigger" type="button" aria-haspopup="true">Leistungen</button>
+          <div class="nav-dropdown-menu" aria-label="Leistungen">
+            <a href="privatkunden.html">Wohnungsreinigung</a>
+            <a href="bueroreinigung.html">Büroreinigung</a>
+            <a href="treppenhausreinigung.html">Treppenhausreinigung</a>
+            <a href="gartenservice.html">Gartenservice</a>
+          </div>
+        </div>
         <a href="kontakt.html" class="active" aria-current="page">Kontakt</a>
       </nav>
       <div class="nav-cta"><a class="btn btn-primary" href="kontakt.html" data-track-event="cta_click" data-track-label="Header Angebot anfordern">Angebot anfordern</a></div>
@@ -101,7 +108,13 @@
       <a href="index.html">Startseite</a>
       <a href="privatkunden.html">Privatkunden</a>
       <a href="gewerbekunden.html">Gewerbekunden</a>
-      <a href="gartenservice.html">Gartenservice</a>
+      <details class="mobile-services">
+        <summary>Leistungen</summary>
+        <a href="privatkunden.html">Wohnungsreinigung</a>
+        <a href="bueroreinigung.html">Büroreinigung</a>
+        <a href="treppenhausreinigung.html">Treppenhausreinigung</a>
+        <a href="gartenservice.html">Gartenservice</a>
+      </details>
       <a href="kontakt.html" class="active" aria-current="page">Kontakt</a>
       <a class="btn btn-primary full" href="kontakt.html" data-track-event="cta_click" data-track-label="Mobiles Menü Angebot anfordern">Angebot anfordern</a>
     </div>
@@ -143,12 +156,12 @@
             </div>
 
             <div>
-              <label for="phone">Telefon</label>
+              <label for="phone">Telefon freiwillig</label>
               <input id="phone" name="phone" type="tel" maxlength="60" autocomplete="tel" inputmode="tel" placeholder="+49 176 55727074">
             </div>
 
             <div>
-              <label for="service">Gewünschte Leistung</label>
+              <label for="service">Gewünschte Leistung freiwillig</label>
               <select id="service" name="service" autocomplete="off">
                 <option value="">Bitte auswählen</option>
                 <option value="Wohnungsreinigung">Wohnungsreinigung</option>
@@ -160,7 +173,7 @@
             </div>
 
             <div class="full-field">
-              <label for="location">Objektort</label>
+              <label for="location">Objektort freiwillig</label>
               <input id="location" name="location" type="text" maxlength="160" autocomplete="address-level2" placeholder="z. B. Viersen, Dülken oder Umgebung">
               <div class="field-hint">Optional, hilft aber bei der Einordnung des Einsatzgebiets.</div>
             </div>
@@ -230,8 +243,7 @@
       <div class="footer-grid">
         <div>
           <a href="index.html" class="brand" style="color:#fff;margin-bottom:18px;display:inline-flex" aria-label="Rühl & Rein Startseite">
-            <div class="logo-box" style="background:rgba(255,255,255,.1)" aria-hidden="true">✦</div>
-            <div class="brand-text"><strong style="color:#fff">Rühl &amp; Rein</strong><span style="color:rgba(255,255,255,.72)">GEBÄUDEREINIGUNG</span></div>
+            <img class="brand-logo" src="assets/img/ruehl-rein-logo.png" width="175" height="175" alt="" aria-hidden="true">
           </a>
           <p>Gebäudereinigung und Reinigungsservice für Viersen und Umgebung.</p>
         </div>

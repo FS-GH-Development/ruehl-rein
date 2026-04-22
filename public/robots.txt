@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /phpmailer/
 Disallow: /contact.php
 
 Sitemap: https://ruehl-rein.com/sitemap.xml

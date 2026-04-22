@@ -7,6 +7,9 @@ config.production.php
 .env.*
 !.env.example
 
+# local project notes / audits
+*.md
+
 # macOS
 .DS_Store
 **/.DS_Store

@@ -1,6 +1,6 @@
 (function () {
-  const dataLayer = window.dataLayer = window.dataLayer || [];
-
+  // Local event hooks only. No analytics library is loaded here; dataLayer/gtag
+  // forwarding happens only if a consent-managed integration defines them later.
   window.rrTrack = function rrTrack(eventName, params = {}) {
     const payload = {
       event: eventName,
@@ -8,7 +8,9 @@
       ...params
     };
 
-    dataLayer.push(payload);
+    if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push(payload);
+    }
 
     if (typeof window.gtag === 'function') {
       window.gtag('event', eventName, params);
