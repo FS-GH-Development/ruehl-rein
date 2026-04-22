@@ -65,6 +65,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid-services{grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}
 .card{
   background:var(--card);
   border:1px solid var(--border);
