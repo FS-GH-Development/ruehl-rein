@@ -3,6 +3,7 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteRule ^index\.html$ https://ruehl-rein.com/ [R=301,L,NC]
   RewriteCond %{HTTP_HOST} ^www\.ruehl-rein\.com$ [NC]
   RewriteRule ^(.*)$ https://ruehl-rein.com/$1 [R=301,L]
 </IfModule>
