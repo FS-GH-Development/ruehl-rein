@@ -12,6 +12,7 @@ config.production.php
 *.md
 !README.md
 backup/
+Live/
 *.zip
 img/
 
