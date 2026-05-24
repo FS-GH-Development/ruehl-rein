@@ -1,3 +1,4 @@
+# local runtime config / secrets
 config.php
 config.local.php
 config.production.php
@@ -9,8 +10,10 @@ config.production.php
 
 # local project notes / audits
 *.md
+!README.md
 backup/
 *.zip
+img/
 
 # macOS
 .DS_Store
