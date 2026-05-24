@@ -16,6 +16,12 @@ function redirectWithStatus(string $status)
     exit;
 }
 
+function redirectToSuccessPage()
+{
+    header('Location: contact-success.html');
+    exit;
+}
+
 function sanitizeSingleLine(string $value): string
 {
     return preg_replace('/[\r\n]+/', ' ', trim($value)) ?? '';
@@ -160,7 +166,7 @@ try {
 
     $mail->send();
 
-    redirectWithStatus('success');
+    redirectToSuccessPage();
 } catch (Exception $e) {
     error_log('Kontaktformular Fehler: ' . $mail->ErrorInfo);
     redirectWithStatus('error');
