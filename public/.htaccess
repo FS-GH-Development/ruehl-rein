@@ -1,14 +1,18 @@
 ErrorDocument 404 /404.html
-Options -Indexes
+Options -Indexes -MultiViews
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule ^index\.html$ https://ruehl-rein.com/ [R=301,L,NC]
+  RewriteRule ^sitemap/?$ https://ruehl-rein.com/sitemap.xml [R=301,L,NC]
+  RewriteRule ^(privatkunden|gewerbekunden|bueroreinigung|treppenhausreinigung|fensterreinigung|kontakt)/?$ https://ruehl-rein.com/$1.html [R=301,L,NC]
+  RewriteCond %{HTTPS} !=on [OR]
   RewriteCond %{HTTP_HOST} ^www\.ruehl-rein\.com$ [NC]
   RewriteRule ^(.*)$ https://ruehl-rein.com/$1 [R=301,L]
 </IfModule>
 
 Redirect 301 /contact-success.html /kontakt.html
+Redirect 301 /gartenservice.html /
 RedirectMatch 404 ^/phpmailer/
 
 <IfModule mod_headers.c>

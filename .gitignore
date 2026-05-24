@@ -9,6 +9,8 @@ config.production.php
 
 # local project notes / audits
 *.md
+backup/
+*.zip
 
 # macOS
 .DS_Store
