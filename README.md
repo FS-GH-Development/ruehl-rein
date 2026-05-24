@@ -13,7 +13,7 @@ Statische Website für Rühl & Rein Gebäudereinigung mit PHP-Kontaktformular.
 - Sitemap liegt unter `public/sitemap.xml`.
 - Rechtliche Utility-Seiten wie Impressum und Datenschutz sind mit `noindex,follow` versehen.
 - Erfolgreiche Kontaktformular-Anfragen landen auf `contact-success.html`. Diese Seite eignet sich als Google-Ads-Conversion-Seite für Angebotsanfragen.
-- Google-Unternehmensprofil ist eingerichtet. Es wird kein unsicherer Google-Maps-Suchlink eingebunden; ein Profil-Link sollte erst ergänzt werden, wenn ein stabiler öffentlicher Link wirklich zuverlässig funktioniert.
+- Google-Unternehmensprofil ist eingerichtet. Der stabile Google-Maps-Profil-Link ist als externer Link eingebunden; es wird keine Google-Maps-Karte eingebettet.
 
 ## Projektstruktur
 
